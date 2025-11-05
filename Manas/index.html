@@ -12,7 +12,6 @@
     --accent: #ff6b6b;
     --muted: #4b5563;
   }
-
   html,body{height:100%}
   body{
     margin:0;
@@ -26,7 +25,6 @@
     -moz-osx-font-smoothing:grayscale;
   }
 
-  /* floating confetti canvas sits full screen */
   #confetti { position:fixed; inset:0; pointer-events:none; z-index:0; }
 
   .scene{
@@ -45,27 +43,13 @@
     backdrop-filter: blur(4px) saturate(1.05);
   }
 
-  /* responsive fallback: single column */
   @media (max-width:860px){
     .scene{grid-template-columns:1fr; padding:20px}
   }
 
-  .left{
-    padding:12px 6px;
-  }
-
-  h1{
-    margin:0 0 6px 0;
-    font-size: clamp(28px, 4vw, 44px);
-    letter-spacing:-0.02em;
-    color: #111827;
-  }
-
-  .subtitle{
-    margin:0 0 14px 0;
-    color:var(--muted);
-    font-size: clamp(14px, 2.2vw, 16px);
-  }
+  .left{ padding:12px 6px; }
+  h1{ margin:0 0 6px 0; font-size: clamp(28px, 4vw, 44px); letter-spacing:-0.02em; color: #111827; }
+  .subtitle{ margin:0 0 14px 0; color:var(--muted); font-size: clamp(14px, 2.2vw, 16px); }
 
   .message{
     background: linear-gradient(90deg, rgba(255,235,238,0.6), rgba(255,247,237,0.6));
@@ -77,10 +61,7 @@
     font-size:16px;
   }
 
-  .cta-row{
-    margin-top:18px;
-    display:flex; gap:12px; flex-wrap:wrap;
-  }
+  .cta-row{ margin-top:18px; display:flex; gap:12px; flex-wrap:wrap; }
 
   .btn{
     border:0;
@@ -100,76 +81,57 @@
     box-shadow:none;
   }
 
-  /* right panel - cake & balloons */
-  .right{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
+  /* new action buttons */
+  .action-row{ margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; }
+  .btn-secondary{
+    background:linear-gradient(90deg,#ffd166,#ffb199);
+    color:#111827;
+    padding:8px 12px;
+    border-radius:8px;
+    font-weight:600;
+    border:0;
+    cursor:pointer;
   }
 
-  /* decorative cake (pure CSS + SVG parts) */
-  .cake {
-    width:260px;
-    max-width:86%;
-    filter: drop-shadow(0 10px 20px rgba(15,23,42,0.15));
-    transform-origin:center bottom;
-    animation: pop 900ms cubic-bezier(.2,.9,.2,1);
-  }
+  .right{ display:flex; align-items:center; justify-content:center; position:relative; }
+
+/* cake and animation */
+  .cake { width:260px; max-width:86%; filter: drop-shadow(0 10px 20px rgba(15,23,42,0.15)); transform-origin:center bottom; animation: pop 900ms cubic-bezier(.2,.9,.2,1); }
   @keyframes pop { from { transform: translateY(18px) scale(.98); opacity:0 } to { transform: translateY(0) scale(1); opacity:1 } }
 
-  /* balloons */
-  .balloon{
-    position:absolute;
-    width:54px;height:72px;border-radius:999px;
-    bottom:6%;
-    opacity:0.98;
-    transform-origin:center bottom;
-    animation: float 6s ease-in-out infinite;
-    box-shadow: inset 0 -6px 14px rgba(255,255,255,0.12);
-  }
-  .balloon::after{
-    content:""; position:absolute; bottom:-28px; left:50%; transform:translateX(-50%); width:2px;height:28px; background:rgba(30,30,30,0.08);
-  }
+  .balloon{ position:absolute; width:54px;height:72px;border-radius:999px; bottom:6%; opacity:0.98; transform-origin:center bottom; animation: float 6s ease-in-out infinite; box-shadow: inset 0 -6px 14px rgba(255,255,255,0.12); }
+  .balloon::after{ content:""; position:absolute; bottom:-28px; left:50%; transform:translateX(-50%); width:2px;height:28px; background:rgba(30,30,30,0.08); }
   .b1{ left:8%; background:linear-gradient(180deg,#ffd166,#ff9f1c); animation-delay:0s; animation-duration:5.6s }
   .b2{ left:28%; background:linear-gradient(180deg,#9b5de5,#7b2cbf); animation-delay:-1s; animation-duration:6.2s; }
   .b3{ right:8%; background:linear-gradient(180deg,#06d6a0,#06b58f); animation-delay:-0.6s; animation-duration:5.2s }
   .b4{ right:22%; background:linear-gradient(180deg,#ff6b6b,#ff8fab); animation-delay:-1.6s; animation-duration:6.6s }
 
-  @keyframes float{
-    0% { transform: translateY(0) rotate(-2deg) }
-    50% { transform: translateY(-26px) rotate(4deg) }
-    100% { transform: translateY(0) rotate(-2deg) }
-  }
+  @keyframes float{ 0% { transform: translateY(0) rotate(-2deg) } 50% { transform: translateY(-26px) rotate(4deg) } 100% { transform: translateY(0) rotate(-2deg) } }
 
-  /* small footer */
-  .footer{
-    margin-top:14px;
-    font-size:13px;color:var(--muted);
-  }
+  .footer{ margin-top:14px; font-size:13px;color:var(--muted); }
 
-  /* confetti pieces (fallback for browsers without canvas animation) */
-  .confetti-piece{
-    width:10px;height:14px;position:absolute; opacity:0.9;
-    transform: rotate(15deg);
-    animation: confetti-fall linear forwards;
+  /* flame flicker & extinguished state */
+  .flame { transform-origin:center bottom; transition: transform 600ms cubic-bezier(.2,.9,.2,1), opacity 600ms ease; animation: flicker 420ms infinite; filter: drop-shadow(0 4px 8px rgba(255,140,100,0.18)); }
+  @keyframes flicker {
+    0%{ transform: translateY(0) scaleY(1)}
+    50%{ transform: translateY(-1px) scaleY(0.98)}
+    100%{ transform: translateY(0) scaleY(1)}
   }
-  @keyframes confetti-fall {
-    to { transform: translateY(120vh) rotate(600deg); opacity:0 }
-  }
+  .extinguished .flame{ transform: scaleY(0); opacity:0; animation: none; filter:none; }
 
-  /* nice rounded shadow under cake */
-  .shadow{
-    position:absolute; bottom:6%; width:180px; height:22px; border-radius:999px;
-    background: radial-gradient(closest-side, rgba(13,18,25,0.12), rgba(13,18,25,0.04));
-    filter: blur(6px); transform:translateY(10px);
-  }
+  /* cake slice group (initially hidden) */
+  #slice { transform-origin: left center; transition: transform 900ms cubic-bezier(.2,.9,.2,1), opacity 700ms ease; }
 
-  /* small responsive tweaks */
-  @media (max-width:480px){
-    .scene{padding:18px;border-radius:12px}
-    .right{padding-top:8px}
-  }
+  /* when slice removed */
+  .slice-removed #slice { transform: translateX(70px) rotate(-18deg); opacity:1; }
+  .slice-removed .cake-layer { opacity:0.9; }
+
+  /* crumb / sparkle */
+  .crumb{ width:8px;height:8px;border-radius:50%; position:absolute; opacity:0; transform:translateY(0) scale(0.6); transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 700ms ease; }
+  .crumb.show{ opacity:1; transform: translateY(-24px) scale(1); }
+
+  .shadow{ position:absolute; bottom:6%; width:180px; height:22px; border-radius:999px; background: radial-gradient(closest-side, rgba(13,18,25,0.12), rgba(13,18,25,0.04)); filter: blur(6px); transform:translateY(10px); }
+  @media (max-width:480px){ .scene{padding:18px;border-radius:12px} .right{padding-top:8px} }
 </style>
 </head>
 <body>
@@ -194,73 +156,114 @@
       <button class="btn btn-outline" id="shareBtn">Copy Link</button>
     </div>
 
+    <!-- New action buttons -->
+    <div class="action-row" style="margin-top:10px">
+      <button class="btn-secondary" id="blowBtn" title="Blow out the candles">Blow Candles 💨</button>
+      <button class="btn-secondary" id="cutBtn" title="Cut the cake">Cut Cake 🍰</button>
+    </div>
+
     <div class="footer">Tip: change the name and message in the HTML to personalize.</div>
   </div>
 
   <div class="right" aria-hidden="true">
-    <!-- balloons -->
-    <div class="balloon b1" style="animation-delay:0s"></div>
-    <div class="balloon b2" style="animation-delay:-0.8s"></div>
-    <div class="balloon b3" style="animation-delay:-1.2s"></div>
-    <div class="balloon b4" style="animation-delay:-0.2s"></div>
+    <div class="balloon b1"></div>
+    <div class="balloon b2"></div>
+    <div class="balloon b3"></div>
+    <div class="balloon b4"></div>
 
-    <!-- cake SVG (inline) -->
+    <!-- cake SVG with identifiable flames and slice group -->
     <svg class="cake" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Birthday cake">
+      <defs>
+        <!-- subtle gradient for slice -->
+        <linearGradient id="sliceGrad" x1="0" x2="1">
+          <stop offset="0" stop-color="#fff2f0"/>
+          <stop offset="1" stop-color="#ffdede"/>
+        </linearGradient>
+      </defs>
+
       <!-- base plate -->
       <ellipse cx="150" cy="246" rx="110" ry="8" fill="rgba(0,0,0,0.08)"/>
-      <!-- cake bottom layer -->
-      <rect x="48" y="120" width="204" height="80" rx="18" fill="#fff8f6" stroke="#ffdeda" stroke-width="2"/>
-      <!-- frosting -->
-      <path d="M48 120c20-26 58-26 102-26s82 0 102 26v6H48v-6z" fill="#ffdede"/>
-      <!-- candles -->
-      <g transform="translate(80,52)">
-        <rect x="0" y="44" width="8" height="36" rx="2" fill="#ff9f1c"/>
-        <rect x="36" y="44" width="8" height="36" rx="2" fill="#7b2cbf"/>
-        <rect x="72" y="44" width="8" height="36" rx="2" fill="#06b58f"/>
-        <!-- flames -->
-        <path d="M4 40c3-5 6-8 4-14 2 6 6 8 4 14-2 6-8 6-8 0z" fill="#ffd166"/>
-        <path transform="translate(36 0)" d="M4 40c3-5 6-8 4-14 2 6 6 8 4 14-2 6-8 6-8 0z" fill="#ffd166"/>
-        <path transform="translate(72 0)" d="M4 40c3-5 6-8 4-14 2 6 6 8 4 14-2 6-8 6-8 0z" fill="#ffd166"/>
+      <!-- cake main group -->
+      <g id="cakeMain">
+        <!-- cake bottom layer -->
+        <rect class="cake-layer" x="48" y="120" width="204" height="80" rx="18" fill="#fff8f6" stroke="#ffdeda" stroke-width="2"/>
+        <!-- frosting -->
+        <path d="M48 120c20-26 58-26 102-26s82 0 102 26v6H48v-6z" fill="#ffdede"/>
+        <!-- decorations -->
+        <circle cx="120" cy="170" r="6" fill="#ffb4b4"/>
+        <circle cx="180" cy="155" r="5" fill="#ffd6a5"/>
+        <circle cx="88" cy="150" r="6" fill="#c9f0e1"/>
       </g>
-      <!-- decorations -->
-      <circle cx="120" cy="170" r="6" fill="#ffb4b4"/>
-      <circle cx="180" cy="155" r="5" fill="#ffd6a5"/>
-      <circle cx="88" cy="150" r="6" fill="#c9f0e1"/>
+
+      <!-- candles group -->
+      <g id="candles" transform="translate(56,52)">
+        <!-- candle 1 -->
+        <g transform="translate(0,44)">
+          <rect width="8" height="36" rx="2" fill="#ff9f1c"/>
+          <g class="flame" id="flame1" transform="translate(4,0)">
+            <path d="M4 0c3-5 6-8 4-14 2 6 6 8 4 14-2 6-8 6-8 0z" fill="#ffd166"/>
+          </g>
+        </g>
+
+        <!-- candle 2 -->
+        <g transform="translate(36,44)">
+          <rect width="8" height="36" rx="2" fill="#7b2cbf"/>
+          <g class="flame" id="flame2" transform="translate(4,0)">
+            <path d="M4 0c3-5 6-8 4-14 2 6 6 8 4 14-2 6-8 6-8 0z" fill="#ffd166"/>
+          </g>
+        </g>
+
+        <!-- candle 3 -->
+        <g transform="translate(72,44)">
+          <rect width="8" height="36" rx="2" fill="#06b58f"/>
+          <g class="flame" id="flame3" transform="translate(4,0)">
+            <path d="M4 0c3-5 6-8 4-14 2 6 6 8 4 14-2 6-8 6-8 0z" fill="#ffd166"/>
+          </g>
+        </g>
+      </g>
+
+      <!-- slice group: shaped like a triangular slice that matches cake colors -->
+      <g id="slice" transform="translate(172,120)" opacity="0">
+        <!-- slice body -->
+        <path d="M0 0 L56 0 L28 80 L0 0" fill="url(#sliceGrad)" stroke="#ffd2cc" stroke-width="1" />
+        <!-- inner filling -->
+        <path d="M6 6 L50 6 L28 68 L6 6" fill="#fff4f2" opacity="0.95"/>
+        <!-- sprinkle -->
+        <circle cx="24" cy="30" r="3" fill="#ffb4b4"/>
+      </g>
     </svg>
 
     <div class="shadow" aria-hidden="true"></div>
+
+    <!-- crumb placeholders -->
+    <div id="crumb1" class="crumb" style="left:58%; bottom:28%; background:#ffb199"></div>
+    <div id="crumb2" class="crumb" style="left:65%; bottom:32%; background:#ffd166"></div>
+    <div id="crumb3" class="crumb" style="left:72%; bottom:30%; background:#9b5de5"></div>
   </div>
 </div>
 
 <script>
 /* ---------- PERSONALIZE HERE ---------- */
-const PERSON_NAME = "Asha";          // change the name shown
-const SUBTITLE = "May your year sparkle with joy and success!"; // short subtitle
-const MESSAGE_ITEMS = [
-  "Health and happiness",
-  "Lots of laughter",
-  "Dreams coming true"
-];
+const PERSON_NAME = "Manas";          // change the name shown
+const SUBTITLE = "May your year sparkle with joy and success!";
+const MESSAGE_ITEMS = ["Health and happiness","Lots of laughter","Dreams coming true"];
 /* -------------------------------------- */
 
 document.getElementById('name').textContent = PERSON_NAME;
 document.getElementById('subtitle').textContent = SUBTITLE;
 const msg = document.getElementById('message');
-msg.innerHTML = "<strong>Today's wishes:</strong><ul>" +
-  MESSAGE_ITEMS.map(i => "<li>" + i + "</li>").join("") + "</ul>";
+msg.innerHTML = "<strong>Today's wishes:</strong><ul>" + MESSAGE_ITEMS.map(i => "<li>" + i + "</li>").join("") + "</ul>";
 
-/* ---------- Confetti Canvas ---------- */
+/* ---------- Confetti Canvas (keeps working) ---------- */
 const canvas = document.getElementById('confetti');
 const ctx = canvas.getContext('2d');
-
 function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
 resize(); window.addEventListener('resize', resize);
 
 let pieces = [];
 const colors = ['#FF6B6B','#FFD166','#06D6A0','#9B5DE5','#FFB199'];
-
-function resetPieces(){
-  pieces = Array.from({length:110}).map(()=>{
+function resetPieces(count=110){
+  pieces = Array.from({length:count}).map(()=>{
     return {
       x: Math.random()*canvas.width,
       y: -Math.random()*canvas.height,
@@ -278,6 +281,7 @@ function resetPieces(){
 resetPieces();
 
 let last = performance.now();
+let animFrame = null;
 function animate(now){
   const dt = (now - last) / 1000;
   last = now;
@@ -298,18 +302,18 @@ function animate(now){
       p.x = Math.random()*canvas.width;
     }
   });
-  requestAnimationFrame(animate);
+  animFrame = requestAnimationFrame(animate);
 }
-requestAnimationFrame(animate);
+animFrame = requestAnimationFrame(animate);
 
 /* ---------- Buttons ---------- */
 document.getElementById('partyBtn').addEventListener('click', ()=>{
-  // quick little pop: enlarge cake then restore, and burst confetti (refresh)
   const cake = document.querySelector('.cake');
   cake.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 700, easing: 'cubic-bezier(.2,.9,.2,1)' });
   resetPieces();
 });
 
+/* copy link */
 document.getElementById('shareBtn').addEventListener('click', async ()=>{
   try{
     await navigator.clipboard.writeText(location.href);
@@ -321,10 +325,69 @@ document.getElementById('shareBtn').addEventListener('click', async ()=>{
   }
 });
 
-/* small accessibility: reduce animations if user prefers */
+/* --------- Blow Candles feature --------- */
+let candlesLit = true;
+const blowBtn = document.getElementById('blowBtn');
+const candlesGroup = document.getElementById('candles');
+
+blowBtn.addEventListener('click', ()=>{
+  if(!candlesLit) return; // already blown
+  candlesLit = false;
+  // add class to extinguish flames (CSS takes care)
+  candlesGroup.classList.add('extinguished');
+
+  // quick small puff visual: translate and fade small flames (not DOM heavy)
+  // subtle page feedback
+  blowBtn.textContent = "Blown ✨";
+  blowBtn.disabled = true;
+
+  // slight confetti puff to celebrate
+  resetPieces(36);
+  setTimeout(()=> resetPieces(), 1400);
+});
+
+/* --------- Cut Cake feature --------- */
+let cakeCut = false;
+const cutBtn = document.getElementById('cutBtn');
+const scene = document.querySelector('.scene');
+const slice = document.getElementById('slice');
+const crumbEls = [document.getElementById('crumb1'), document.getElementById('crumb2'), document.getElementById('crumb3')];
+
+cutBtn.addEventListener('click', ()=>{
+  if(cakeCut) return;
+  cakeCut = true;
+  cutBtn.textContent = "Cut ✅";
+  cutBtn.disabled = true;
+
+  // reveal slice (set opacity then animate transform by toggling class on scene)
+  slice.style.opacity = "1";
+  // small delay for visible reveal then animate
+  setTimeout(()=> {
+    scene.classList.add('slice-removed');
+
+    // animate slice movement via transform (CSS class handles transform)
+    // show crumbs
+    crumbEls.forEach((c,i)=>{
+      setTimeout(()=> c.classList.add('show'), 220 + i*120);
+    });
+
+    // burst confetti more
+    resetPieces(200);
+
+    // small crumb fade-out later
+    setTimeout(()=> {
+      crumbEls.forEach(c=> c.classList.remove('show'));
+    }, 3000);
+
+  }, 120);
+
+});
+
+/* ---------- Accessibility: reduce motion handling ---------- */
 if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.querySelectorAll('.balloon').forEach(b=> b.style.animation = 'none');
-  cancelAnimationFrame(animate);
+  document.querySelectorAll('.flame').forEach(f=> f.style.animation = 'none');
+  cancelAnimationFrame(animFrame);
   ctx.clearRect(0,0,canvas.width,canvas.height);
 }
 </script>
