@@ -1,12 +1,332 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Welcome</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday</title>
+<style>
+  :root{
+    --bg1: #ff9a9e;
+    --bg2: #fad0c4;
+    --card-bg: rgba(255,255,255,0.95);
+    --accent: #ff6b6b;
+    --muted: #4b5563;
+  }
+
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(135deg,var(--bg1),var(--bg2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* floating confetti canvas sits full screen */
+  #confetti { position:fixed; inset:0; pointer-events:none; z-index:0; }
+
+  .scene{
+    position:relative;
+    z-index:2;
+    width:min(980px,94vw);
+    padding:32px;
+    border-radius:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95), var(--card-bg));
+    box-shadow: 0 10px 30px rgba(14,30,37,0.15);
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:24px;
+    align-items:center;
+    min-height:420px;
+    backdrop-filter: blur(4px) saturate(1.05);
+  }
+
+  /* responsive fallback: single column */
+  @media (max-width:860px){
+    .scene{grid-template-columns:1fr; padding:20px}
+  }
+
+  .left{
+    padding:12px 6px;
+  }
+
+  h1{
+    margin:0 0 6px 0;
+    font-size: clamp(28px, 4vw, 44px);
+    letter-spacing:-0.02em;
+    color: #111827;
+  }
+
+  .subtitle{
+    margin:0 0 14px 0;
+    color:var(--muted);
+    font-size: clamp(14px, 2.2vw, 16px);
+  }
+
+  .message{
+    background: linear-gradient(90deg, rgba(255,235,238,0.6), rgba(255,247,237,0.6));
+    padding:16px;
+    border-radius:12px;
+    color:#111827;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    line-height:1.5;
+    font-size:16px;
+  }
+
+  .cta-row{
+    margin-top:18px;
+    display:flex; gap:12px; flex-wrap:wrap;
+  }
+
+  .btn{
+    border:0;
+    background:linear-gradient(90deg,#ff7a7a,#ffb199);
+    color:white;
+    padding:10px 16px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow: 0 6px 18px rgba(255,107,107,0.18);
+  }
+
+  .btn-outline{
+    background:transparent;
+    color:var(--accent);
+    border:2px solid rgba(255,107,107,0.12);
+    box-shadow:none;
+  }
+
+  /* right panel - cake & balloons */
+  .right{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+  }
+
+  /* decorative cake (pure CSS + SVG parts) */
+  .cake {
+    width:260px;
+    max-width:86%;
+    filter: drop-shadow(0 10px 20px rgba(15,23,42,0.15));
+    transform-origin:center bottom;
+    animation: pop 900ms cubic-bezier(.2,.9,.2,1);
+  }
+  @keyframes pop { from { transform: translateY(18px) scale(.98); opacity:0 } to { transform: translateY(0) scale(1); opacity:1 } }
+
+  /* balloons */
+  .balloon{
+    position:absolute;
+    width:54px;height:72px;border-radius:999px;
+    bottom:6%;
+    opacity:0.98;
+    transform-origin:center bottom;
+    animation: float 6s ease-in-out infinite;
+    box-shadow: inset 0 -6px 14px rgba(255,255,255,0.12);
+  }
+  .balloon::after{
+    content:""; position:absolute; bottom:-28px; left:50%; transform:translateX(-50%); width:2px;height:28px; background:rgba(30,30,30,0.08);
+  }
+  .b1{ left:8%; background:linear-gradient(180deg,#ffd166,#ff9f1c); animation-delay:0s; animation-duration:5.6s }
+  .b2{ left:28%; background:linear-gradient(180deg,#9b5de5,#7b2cbf); animation-delay:-1s; animation-duration:6.2s; }
+  .b3{ right:8%; background:linear-gradient(180deg,#06d6a0,#06b58f); animation-delay:-0.6s; animation-duration:5.2s }
+  .b4{ right:22%; background:linear-gradient(180deg,#ff6b6b,#ff8fab); animation-delay:-1.6s; animation-duration:6.6s }
+
+  @keyframes float{
+    0% { transform: translateY(0) rotate(-2deg) }
+    50% { transform: translateY(-26px) rotate(4deg) }
+    100% { transform: translateY(0) rotate(-2deg) }
+  }
+
+  /* small footer */
+  .footer{
+    margin-top:14px;
+    font-size:13px;color:var(--muted);
+  }
+
+  /* confetti pieces (fallback for browsers without canvas animation) */
+  .confetti-piece{
+    width:10px;height:14px;position:absolute; opacity:0.9;
+    transform: rotate(15deg);
+    animation: confetti-fall linear forwards;
+  }
+  @keyframes confetti-fall {
+    to { transform: translateY(120vh) rotate(600deg); opacity:0 }
+  }
+
+  /* nice rounded shadow under cake */
+  .shadow{
+    position:absolute; bottom:6%; width:180px; height:22px; border-radius:999px;
+    background: radial-gradient(closest-side, rgba(13,18,25,0.12), rgba(13,18,25,0.04));
+    filter: blur(6px); transform:translateY(10px);
+  }
+
+  /* small responsive tweaks */
+  @media (max-width:480px){
+    .scene{padding:18px;border-radius:12px}
+    .right{padding-top:8px}
+  }
+</style>
 </head>
 <body>
-  <h1>Welcome Page</h1>
-  <p>One a non-technical, always a non-technical</p>
+<canvas id="confetti"></canvas>
 
+<div class="scene" role="main" aria-labelledby="greetingTitle">
+  <div class="left">
+    <h1 id="greetingTitle">Happy Birthday, <span id="name">Friend</span> 🎉</h1>
+    <p class="subtitle" id="subtitle">Wishing you joy, laughter and beautiful surprises today.</p>
+
+    <div class="message" id="message">
+      <strong>May your day be filled with:</strong>
+      <ul>
+        <li>Sweet moments</li>
+        <li>Big smiles</li>
+        <li>Memories to cherish forever</li>
+      </ul>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn" id="partyBtn">Celebrate 🎈</button>
+      <button class="btn btn-outline" id="shareBtn">Copy Link</button>
+    </div>
+
+    <div class="footer">Tip: change the name and message in the HTML to personalize.</div>
+  </div>
+
+  <div class="right" aria-hidden="true">
+    <!-- balloons -->
+    <div class="balloon b1" style="animation-delay:0s"></div>
+    <div class="balloon b2" style="animation-delay:-0.8s"></div>
+    <div class="balloon b3" style="animation-delay:-1.2s"></div>
+    <div class="balloon b4" style="animation-delay:-0.2s"></div>
+
+    <!-- cake SVG (inline) -->
+    <svg class="cake" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Birthday cake">
+      <!-- base plate -->
+      <ellipse cx="150" cy="246" rx="110" ry="8" fill="rgba(0,0,0,0.08)"/>
+      <!-- cake bottom layer -->
+      <rect x="48" y="120" width="204" height="80" rx="18" fill="#fff8f6" stroke="#ffdeda" stroke-width="2"/>
+      <!-- frosting -->
+      <path d="M48 120c20-26 58-26 102-26s82 0 102 26v6H48v-6z" fill="#ffdede"/>
+      <!-- candles -->
+      <g transform="translate(80,52)">
+        <rect x="0" y="44" width="8" height="36" rx="2" fill="#ff9f1c"/>
+        <rect x="36" y="44" width="8" height="36" rx="2" fill="#7b2cbf"/>
+        <rect x="72" y="44" width="8" height="36" rx="2" fill="#06b58f"/>
+        <!-- flames -->
+        <path d="M4 40c3-5 6-8 4-14 2 6 6 8 4 14-2 6-8 6-8 0z" fill="#ffd166"/>
+        <path transform="translate(36 0)" d="M4 40c3-5 6-8 4-14 2 6 6 8 4 14-2 6-8 6-8 0z" fill="#ffd166"/>
+        <path transform="translate(72 0)" d="M4 40c3-5 6-8 4-14 2 6 6 8 4 14-2 6-8 6-8 0z" fill="#ffd166"/>
+      </g>
+      <!-- decorations -->
+      <circle cx="120" cy="170" r="6" fill="#ffb4b4"/>
+      <circle cx="180" cy="155" r="5" fill="#ffd6a5"/>
+      <circle cx="88" cy="150" r="6" fill="#c9f0e1"/>
+    </svg>
+
+    <div class="shadow" aria-hidden="true"></div>
+  </div>
+</div>
+
+<script>
+/* ---------- PERSONALIZE HERE ---------- */
+const PERSON_NAME = "Asha";          // change the name shown
+const SUBTITLE = "May your year sparkle with joy and success!"; // short subtitle
+const MESSAGE_ITEMS = [
+  "Health and happiness",
+  "Lots of laughter",
+  "Dreams coming true"
+];
+/* -------------------------------------- */
+
+document.getElementById('name').textContent = PERSON_NAME;
+document.getElementById('subtitle').textContent = SUBTITLE;
+const msg = document.getElementById('message');
+msg.innerHTML = "<strong>Today's wishes:</strong><ul>" +
+  MESSAGE_ITEMS.map(i => "<li>" + i + "</li>").join("") + "</ul>";
+
+/* ---------- Confetti Canvas ---------- */
+const canvas = document.getElementById('confetti');
+const ctx = canvas.getContext('2d');
+
+function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+let pieces = [];
+const colors = ['#FF6B6B','#FFD166','#06D6A0','#9B5DE5','#FFB199'];
+
+function resetPieces(){
+  pieces = Array.from({length:110}).map(()=>{
+    return {
+      x: Math.random()*canvas.width,
+      y: -Math.random()*canvas.height,
+      w: 6 + Math.random()*10,
+      h: 6 + Math.random()*12,
+      r: Math.random()*360,
+      velX: -0.5 + Math.random()*1.5,
+      velY: 1 + Math.random()*3.5,
+      spin: -3 + Math.random()*6,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      opacity: 0.9
+    };
+  });
+}
+resetPieces();
+
+let last = performance.now();
+function animate(now){
+  const dt = (now - last) / 1000;
+  last = now;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pieces.forEach(p=>{
+    p.x += p.velX * (60*dt);
+    p.y += p.velY * (60*dt);
+    p.r += p.spin * dt;
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.r * Math.PI/180);
+    ctx.globalAlpha = p.opacity;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    ctx.restore();
+    if(p.y > canvas.height + 40) {
+      p.y = -20 - Math.random()*200;
+      p.x = Math.random()*canvas.width;
+    }
+  });
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+
+/* ---------- Buttons ---------- */
+document.getElementById('partyBtn').addEventListener('click', ()=>{
+  // quick little pop: enlarge cake then restore, and burst confetti (refresh)
+  const cake = document.querySelector('.cake');
+  cake.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 700, easing: 'cubic-bezier(.2,.9,.2,1)' });
+  resetPieces();
+});
+
+document.getElementById('shareBtn').addEventListener('click', async ()=>{
+  try{
+    await navigator.clipboard.writeText(location.href);
+    const old = document.getElementById('shareBtn').textContent;
+    document.getElementById('shareBtn').textContent = 'Copied!';
+    setTimeout(()=> document.getElementById('shareBtn').textContent = old, 1600);
+  }catch(e){
+    alert('Could not copy — your browser may block clipboard access. Manually share the link: ' + location.href);
+  }
+});
+
+/* small accessibility: reduce animations if user prefers */
+if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('.balloon').forEach(b=> b.style.animation = 'none');
+  cancelAnimationFrame(animate);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+</script>
 </body>
 </html>
