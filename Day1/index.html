@@ -7,14 +7,14 @@
         margin: 0;
         overflow: hidden;
         background: linear-gradient(135deg, #6dd5fa, #2980b9);
-        font-family: Arial, sans-serif;
+        touch-action: none; /* Important for mobile */
     }
 
     .bubble {
         position: absolute;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(6px);
         animation: float 6s linear infinite;
     }
 
@@ -24,7 +24,7 @@
     }
 
     .pop {
-        animation: pop .2s forwards;
+        animation: pop .25s forwards;
     }
 
     @keyframes pop {
@@ -36,10 +36,12 @@
 <body>
 
 <script>
-function playPopSound() {
-    const popSound = new Audio("data:audio/wav;base64,UklGRhQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQwAAACAgICAgICAgICAgICAgICAg");
-    popSound.play();
-}
+let popAudio = new Audio("data:audio/wav;base64,UklGRhQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQwAAACAgICAgICAgICAgICAgICAg");
+
+document.body.addEventListener("pointerdown", () => {
+    // Enable sound after first touch (mobile rule)
+    popAudio.play().catch(() => {});
+}, { once: true });
 
 function createBubble() {
     const bubble = document.createElement("div");
@@ -48,18 +50,19 @@ function createBubble() {
     bubble.style.width = size + "px";
     bubble.style.height = size + "px";
     bubble.style.left = Math.random() * window.innerWidth + "px";
+    bubble.style.top = window.innerHeight + "px";
     document.body.appendChild(bubble);
 
-    bubble.addEventListener("click", () => {
+    bubble.addEventListener("pointerdown", () => {
         bubble.classList.add("pop");
-        playPopSound();
-        setTimeout(() => bubble.remove(), 200);
+        popAudio.cloneNode().play(); // Play sound instantly
+        setTimeout(() => bubble.remove(), 250);
     });
 
     setTimeout(() => bubble.remove(), 6000);
 }
 
-setInterval(createBubble, 400);
+setInterval(createBubble, 350);
 </script>
 
 </body>
