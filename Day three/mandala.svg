@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+<circle cx="150" cy="150" r="90" fill="white" stroke="black" stroke-width="3"/>
+<path d="M 220.0 150.0 c -5 -5 -15 -5 -20 5 c -5 10 10 20 20 30 c 10 -10 25 -20 20 -30 c -5 -10 -15 -10 -20 -5 z" fill="white" stroke="black" stroke-width="2"/>
+<path d="M 199.49747468305833 199.49747468305833 c -5 -5 -15 -5 -20 5 c -5 10 10 20 20 30 c 10 -10 25 -20 20 -30 c -5 -10 -15 -10 -20 -5 z" fill="white" stroke="black" stroke-width="2"/>
+<path d="M 150.0 220.0 c -5 -5 -15 -5 -20 5 c -5 10 10 20 20 30 c 10 -10 25 -20 20 -30 c -5 -10 -15 -10 -20 -5 z" fill="white" stroke="black" stroke-width="2"/>
+<path d="M 100.50252531694167 199.49747468305833 c -5 -5 -15 -5 -20 5 c -5 10 10 20 20 30 c 10 -10 25 -20 20 -30 c -5 -10 -15 -10 -20 -5 z" fill="white" stroke="black" stroke-width="2"/>
+<path d="M 80.0 150.0 c -5 -5 -15 -5 -20 5 c -5 10 10 20 20 30 c 10 -10 25 -20 20 -30 c -5 -10 -15 -10 -20 -5 z" fill="white" stroke="black" stroke-width="2"/>
+<path d="M 100.50252531694167 100.50252531694167 c -5 -5 -15 -5 -20 5 c -5 10 10 20 20 30 c 10 -10 25 -20 20 -30 c -5 -10 -15 -10 -20 -5 z" fill="white" stroke="black" stroke-width="2"/>
+<path d="M 150.0 80.0 c -5 -5 -15 -5 -20 5 c -5 10 10 20 20 30 c 10 -10 25 -20 20 -30 c -5 -10 -15 -10 -20 -5 z" fill="white" stroke="black" stroke-width="2"/>
+<path d="M 199.49747468305833 100.50252531694167 c -5 -5 -15 -5 -20 5 c -5 10 10 20 20 30 c 10 -10 25 -20 20 -30 c -5 -10 -15 -10 -20 -5 z" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="190.0" cy="150.0" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="184.64101615137756" cy="170.0" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="170.0" cy="184.64101615137753" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="150.0" cy="190.0" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="130.0" cy="184.64101615137756" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="115.35898384862246" cy="170.0" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="110.0" cy="150.0" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="115.35898384862244" cy="130.0" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="129.99999999999997" cy="115.35898384862247" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="150.0" cy="110.0" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="169.99999999999997" cy="115.35898384862244" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="184.64101615137753" cy="129.99999999999997" r="8" fill="white" stroke="black" stroke-width="2"/>
+</svg>
