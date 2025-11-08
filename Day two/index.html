@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Color Mandala</title>
+<style>
+    body {
+        margin: 0;
+        background: #fbeff8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: sans-serif;
+        padding-top: 10px;
+        touch-action: none;
+    }
+
+    #colors {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .color-btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 2px solid #333;
+        cursor: pointer;
+    }
+
+    .active {
+        border: 3px solid black;
+        transform: scale(1.2);
+    }
+
+    svg path {
+        transition: fill 0.3s ease;
+        cursor: pointer;
+    }
+
+</style>
+</head>
+<body>
+
+<h2>Color the Mandala 🎨</h2>
+
+<div id="colors"></div>
+
+<div id="mandala"></div>
+
+<script>
+const palette = ["#ff6b6b", "#ff9f43", "#feca57", "#1dd1a1", "#54a0ff", "#5f27cd", "#c56cf0", "#ff9ff3"];
+
+const colorContainer = document.getElementById("colors");
+
+let selectedColor = palette[0];
+
+palette.forEach(color => {
+    const btn = document.createElement("div");
+    btn.className = "color-btn";
+    btn.style.background = color;
+    if(color === selectedColor) btn.classList.add("active");
+    btn.onclick = () => {
+        selectedColor = color;
+        document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+    }
+    colorContainer.appendChild(btn);
+});
+
+fetch("mandala.svg")
+.then(res => res.text())
+.then(svg => {
+    document.getElementById("mandala").innerHTML = svg;
+    document.querySelectorAll("path").forEach(area => {
+        area.addEventListener("pointerdown", () => {
+            area.style.fill = selectedColor;
+        });
+    });
+});
+</script>
+
+</body>
+</html>
