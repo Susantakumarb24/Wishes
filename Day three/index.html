@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Color Cute Mandala</title>
+<style>
+    body {
+        margin: 0;
+        background: #fbeff8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: sans-serif;
+        padding-top: 10px;
+        touch-action: none;
+    }
+
+    #colors {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .color-btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 2px solid #333;
+        cursor: pointer;
+    }
+
+    .active {
+        border: 3px solid black;
+        transform: scale(1.2);
+    }
+
+    svg path, svg circle {
+        cursor: pointer;
+        transition: fill 0.25s ease;
+    }
+</style>
+</head>
+<body>
+
+<h2>Color the Cute Mandala 🎨✨</h2>
+
+<div id="colors"></div>
+
+<!-- ✅ Embedded Mandala SVG (Kids Style, No External File Needed) -->
+<svg id="mandala" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+<circle cx="150" cy="150" r="90" fill="white" stroke="black" stroke-width="3"/>
+
+<!-- Hearts -->
+<path d="M 220 150 c -8 -8 -24 -8 -32 8 c -8 16 16 32 32 48 c 16 -16 40 -32 32 -48 c -8 -16 -24 -16 -32 -8 z"
+      fill="white" stroke="black" stroke-width="2"/>
+<path d="M 80 150 c -8 -8 -24 -8 -32 8 c -8 16 16 32 32 48 c 16 -16 40 -32 32 -48 c -8 -16 -24 -16 -32 -8 z"
+      fill="white" stroke="black" stroke-width="2"/>
+
+<!-- Center Flower -->
+<circle cx="150" cy="150" r="18" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="150" cy="110" r="12" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="190" cy="150" r="12" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="150" cy="190" r="12" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="110" cy="150" r="12" fill="white" stroke="black" stroke-width="2"/>
+
+<!-- Cute Dots -->
+<circle cx="150" cy="70" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="150" cy="230" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="70" cy="150" r="8" fill="white" stroke="black" stroke-width="2"/>
+<circle cx="230" cy="150" r="8" fill="white" stroke="black" stroke-width="2"/>
+</svg>
+
+<script>
+// Color Palette
+const palette = ["#ff6b6b","#ff9f43","#feca57","#1dd1a1","#54a0ff","#5f27cd","#c56cf0","#ff9ff3","#f368e0","#48dbfb"];
+let selectedColor = palette[0];
+
+const colorContainer = document.getElementById("colors");
+
+// Create Color Buttons
+palette.forEach(color => {
+    const btn = document.createElement("div");
+    btn.className = "color-btn";
+    btn.style.background = color;
+    if (color === selectedColor) btn.classList.add("active");
+    btn.onclick = () => {
+        selectedColor = color;
+        document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+    }
+    colorContainer.appendChild(btn);
+});
+
+// Make SVG Colorable
+document.querySelectorAll("#mandala path, #mandala circle").forEach(area => {
+    area.addEventListener("pointerdown", () => {
+        area.style.fill = selectedColor;
+    });
+});
+</script>
+
+</body>
+</html>
